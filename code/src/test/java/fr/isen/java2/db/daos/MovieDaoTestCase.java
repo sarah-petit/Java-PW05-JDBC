@@ -1,17 +1,25 @@
 package fr.isen.java2.db.daos;
 
-import static org.assertj.core.api.Assertions.fail;
-
-import java.sql.Connection;
-import java.sql.Statement;
-
+import fr.isen.java2.db.entities.Genre;
+import fr.isen.java2.db.entities.Movie;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Connection;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
+
 public class MovieDaoTestCase {
+
+	private final MovieDao movieDao = new MovieDao();
+
 	@Before
 	public void initDb() throws Exception {
-		Connection connection = DataSourceFactory.getDataSource().getConnection();
+		Connection connection = DataSourceFactory.getConnection();
 		Statement stmt = connection.createStatement();
 		stmt.executeUpdate(
 				"CREATE TABLE IF NOT EXISTS genre (idgenre INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT , name VARCHAR(50) NOT NULL);");
@@ -37,16 +45,43 @@ public class MovieDaoTestCase {
 	
 	 @Test
 	 public void shouldListMovies() {
-		 fail("Not yet implemented");
+		 //WHEN
+		 List<Movie> movies = movieDao.listMovies();
+		 //THEN
+		 assertThat(movies).hasSize(3);
+		 assertThat(movies).extracting("id", "title", "releaseDate", "genre.id", "genre.name", "duration", "director", "summary")
+				 .containsOnly(tuple(1, "Title 1", LocalDate.parse("2015-11-26"), 1, "Drama", 120, "director 1", "summary of the first movie")
+						 , tuple(2, "My Title 2", LocalDate.parse("2015-11-14"), 2, "Comedy", 114, "director 2", "summary of the second movie")
+						 , tuple(3, "Third title", LocalDate.parse("2015-12-12"), 2, "Comedy", 176, "director 3", "summary of the third movie"));
 	 }
 	
 	 @Test
 	 public void shouldListMoviesByGenre() {
-		 fail("Not yet implemented");
+		 //WHEN
+		 List<Movie> movies = movieDao.listMoviesByGenre("Comedy");
+		 //THEN
+		 assertThat(movies).hasSize(2);
+		 assertThat(movies).extracting("id", "title", "releaseDate", "genre.id", "genre.name", "duration", "director", "summary")
+				 .containsOnly(tuple(2, "My Title 2", LocalDate.parse("2015-11-14"), 2, "Comedy", 114, "director 2", "summary of the second movie")
+						 , tuple(3, "Third title", LocalDate.parse("2015-12-12"), 2, "Comedy", 176, "director 3", "summary of the third movie"));
+
 	 }
 	
 	 @Test
-	 public void shouldAddMovie() throws Exception {
-		 fail("Not yet implemented");
+	 public void shouldAddMovie() {
+		 //GIVEN
+		 Movie movie = new Movie(4, "New Movie", LocalDate.parse("2015-12-25"), new Genre(1, "Drama"), 120, "new director", "summary of the new movie");
+		 // WHEN
+		 Movie resultMovie = movieDao.addMovie(movie);
+		 // THEN
+		 assertThat(resultMovie).isNotNull();
+		 assertThat(resultMovie.getId()).isNotNull();
+		 assertThat(resultMovie.getTitle()).isEqualTo("New Movie");
+		 assertThat(resultMovie.getReleaseDate()).isEqualTo(LocalDate.parse("2015-12-25"));
+		 assertThat(resultMovie.getGenre().getId()).isEqualTo(1);
+		 assertThat(resultMovie.getGenre().getName()).isEqualTo("Drama");
+		 assertThat(resultMovie.getDuration()).isEqualTo(120);
+		 assertThat(resultMovie.getDirector()).isEqualTo("new director");
+		 assertThat(resultMovie.getSummary()).isEqualTo("summary of the new movie");
 	 }
 }
