@@ -14,8 +14,11 @@ import static fr.isen.java2.db.daos.DataSourceFactory.getConnection;
 public class GenreDao {
 
 	/**
+	 * Méthode qui permet de récupérer la liste de tous les genres contenus dans la bdd
 	 *
-	 * @return la liste de tous les genres contenus dans la bdd
+	 *
+	 * @return
+	 * 				la liste des genres
 	 */
 	public List<Genre> listGenres() {
 		List<Genre> listGenres = new ArrayList<>();
@@ -36,9 +39,13 @@ public class GenreDao {
 	}
 
 	/**
+	 * Méthode qui cherche un genre dans la base de donnée en connaissant son nom
 	 *
-	 * @param name le nom du genre que l'on cherche
-	 * @return le genre correspondant dans la bdd
+	 *
+	 * @param name
+	 * 				le nom du genre que l'on cherche
+	 * @return
+	 * 				le genre correspondant dans la bdd
 	 */
 	public Genre getGenre(String name) {
 		try(Connection connection = getConnection()) {
@@ -58,8 +65,11 @@ public class GenreDao {
 	}
 
 	/**
+	 *	Méthode qui ajoute un nouveau genre dans la base de donnée
 	 *
-	 * @param name le nom du genre que l'on souhaite ajouter dans la bdd
+	 *
+	 * @param name
+	 * 				le nom du genre que l'on souhaite ajouter dans la bdd
 	 */
 	public void addGenre(String name) {
 		try (Connection connection = getConnection()) {

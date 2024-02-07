@@ -13,8 +13,10 @@ import static fr.isen.java2.db.daos.DataSourceFactory.getConnection;
 public class MovieDao {
 
 	/**
+	 * Méthode qui permet de récupérer la liste de tous les films contenus dans la bdd
 	 *
-	 * @return le liste de tous les films contenus dans le bdd
+	 * @return
+	 * 				la liste de tous les films contenus dans la bdd
 	 */
 	public List<Movie> listMovies() {
 		List<Movie> listMovies = new ArrayList<>();
@@ -42,9 +44,12 @@ public class MovieDao {
 	}
 
 	/**
+	 * Méthode qui cherche tous les films d'un genre donné
 	 *
-	 * @param genreName le nom du genre dont on souhaite le liste des films
-	 * @return le liste des films correspondant au genre demandé
+	 * @param genreName
+	 * 					le nom du genre dont on souhaite la liste des films
+	 * @return
+	 * 					la liste des films correspondant au genre demandé
 	 */
 	public List<Movie> listMoviesByGenre(String genreName) {
 		List<Movie> listMovies = new ArrayList<>();
@@ -73,9 +78,12 @@ public class MovieDao {
 	}
 
 	/**
+	 * Méthode qui ajoute un nouveau film dans la bdd
 	 *
-	 * @param movie le film que l'on souhait ajouter dans la bdd
-	 * @return le film qui a été ajouté en bdd avec son id dans la bdd
+	 * @param movie
+	 * 				le film que l'on souhaite ajouter dans la bdd
+	 * @return
+	 * 				le film qui a été ajouté en bdd avec son id qui provient de la bdd
 	 */
 	public Movie addMovie(Movie movie) {
 		try (Connection connection = getConnection()) {

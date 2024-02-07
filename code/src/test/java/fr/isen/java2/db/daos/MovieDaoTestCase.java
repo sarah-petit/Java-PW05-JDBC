@@ -69,7 +69,7 @@ public class MovieDaoTestCase {
 	
 	 @Test
 	 public void shouldAddMovie() {
-		 //GIVEN
+		 // GIVEN
 		 Movie movie = new Movie(4, "New Movie", LocalDate.parse("2015-12-25"), new Genre(1, "Drama"), 120, "new director", "summary of the new movie");
 		 // WHEN
 		 Movie resultMovie = movieDao.addMovie(movie);
